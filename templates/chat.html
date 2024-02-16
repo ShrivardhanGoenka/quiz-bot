@@ -69,11 +69,11 @@
             {% for message in request.session.message_history %}
                 {% if message.is_user %}
                 <li class="message user-message">
-                    <div class="message-text">{{message.text}}</div>
+                    <div class="message-text">{{message.text|linebreaks}}</div>
                 </li>
                 {% else %}
                 <li class="message bot-message">
-                    <div class="message-text">{{message.text}}</div>
+                    <div class="message-text">{{message.text|linebreaks}}</div>
                 </li>
                 {% endif %}
             {% endfor %}
@@ -131,9 +131,11 @@
     function addMessage(text, isUser = false) {
         const chatMessages = document.getElementById('chat-messages');
         const messageClass = isUser ? 'user-message' : 'bot-message';
+        const textformat = text.replace(/\n/g, '<br>');
+        const textformat2 = textformat.replace(/<!-- Comment -->/g,"&lt;!-- Comment --&gt;");
         const messageText = `
             <li class="message ${messageClass}">
-                <div class="message-text">${text}</div>
+                <div class="message-text">${textformat2}</div>
             </li>
         `;
         chatMessages.insertAdjacentHTML('beforeend', messageText);
